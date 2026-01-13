@@ -53,31 +53,18 @@ def _assert_updated(old_fetched_at: Optional[str], json_path: str) -> None:
 async def run_with_agent(uid: str, scrolls: int) -> None:
     from claude_agent_sdk import ClaudeAgentOptions, query  # type: ignore
 
-    # 构建 options 参数,支持自定义 base_url
-    options_dict = {
-        "allowed_tools": ["Bash", "Read", "Write", "Glob", "Skill"],
-        "permission_mode": "bypassPermissions",
-        "setting_sources": ["project"],
-        "model": "sonnet",
-        "max_turns": 40,
-        "system_prompt": (
+    options = ClaudeAgentOptions(
+        allowed_tools=["Bash", "Read", "Write", "Glob", "Skill", "Task"],
+        permission_mode="bypassPermissions",
+        setting_sources=["project"],
+        model="sonnet",
+        max_turns=40,
+        system_prompt=(
             "你是在CI里运行的自动化agent。目标：更新 idol_weibo_posts.json，并生成静态站点所需文件。"
             "优先使用 agent-browser（如果环境里有该命令）完成页面抓取；否则使用 Playwright 脚本。"
             "严格按步骤执行，不要改代码，不要做额外输出文件。"
         ),
-    }
-
-    # 如果配置了自定义 base_url,传入 SDK
-    base_url = os.environ.get("ANTHROPIC_BASE_URL")
-    if base_url:
-        options_dict["base_url"] = base_url
-
-    # 如果配置了 AUTH_TOKEN 而非 API_KEY,需要设置环境变量映射
-    auth_token = os.environ.get("ANTHROPIC_AUTH_TOKEN")
-    if auth_token and not os.environ.get("ANTHROPIC_API_KEY"):
-        os.environ["ANTHROPIC_API_KEY"] = auth_token
-
-    options = ClaudeAgentOptions(**options_dict)
+    )
 
     prompt = f"""
 你要在当前仓库根目录执行一次“Idol动态 -> JSON -> 报告 -> 静态站点”的流水线。
