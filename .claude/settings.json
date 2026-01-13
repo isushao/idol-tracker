@@ -1,0 +1,8 @@
+{
+  "env": {
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "true"
+  },
+  "enabledPlugins": {
+    "document-skills@anthropic-agent-skills": true
+  }
+}
