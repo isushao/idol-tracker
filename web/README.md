@@ -1,6 +1,8 @@
-# Weibo 动态看板（shadcn/ui + Vite）
+# Weibo Dashboard (shadcn/ui + Vite)
 
-## 运行
+**English** · [简体中文](README.zh-CN.md)
+
+## Run locally
 
 ```bash
 cd web
@@ -9,19 +11,25 @@ npm run sync-data
 npm run dev
 ```
 
-然后打开 `http://localhost:5173`。
+Open `http://localhost:5173` in your browser.
 
-## GitHub Pages
+## GitHub Pages & CI
 
-`vite.config.ts` 会在 CI 中根据 `GITHUB_REPOSITORY` 自动设置 `base`（例如 `/<repo>/`），本地默认是 `/`。
+`vite.config.ts` will set `base` automatically in CI based on `GITHUB_REPOSITORY` (e.g., `/<repo>/`). Locally it defaults to `/`.
 
-## 更新数据
+When deploying via GitHub Actions, ensure the pipeline builds `web` and publishes the `web/dist` directory to GitHub Pages (see `pipeline/README.md` for a recommended workflow snippet).
 
-根目录重新生成 `idol_weibo_posts.json` 后，执行：
+## Update data
+
+After regenerating `idol_weibo_posts.json` in the repo root, run:
 
 ```bash
 cd web
 npm run sync-data
 ```
 
-刷新页面即可。
+Then refresh the site to see updated content.
+
+---
+
+**Chinese translation:** [简体中文](README.zh-CN.md)
